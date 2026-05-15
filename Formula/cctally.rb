@@ -1,8 +1,8 @@
 class Cctally < Formula
   desc "Track Claude Code subscription usage as $-per-1% weekly trend"
   homepage "https://github.com/omrikais/cctally"
-  url "https://github.com/omrikais/cctally/archive/refs/tags/v1.7.0.tar.gz"
-  sha256 "a987dfdef8497e54af3929d6462d6b2e5363597fbb29dec68117c74d84519a4a"
+  url "https://github.com/omrikais/cctally/archive/refs/tags/v1.7.1.tar.gz"
+  sha256 "33a578563a892839eb003d7132ad65a1951cb979f402146ea32aea9ab00eb8a2"
   license "Apache-2.0"
 
   depends_on "python@3.13"
@@ -23,8 +23,16 @@ class Cctally < Formula
     cctally-update
   ].freeze
 
+  # Runtime siblings late-loaded by bin/cctally via _load_sibling
+  # (Path(__file__).parent / "<name>.py"). Globbed so future
+  # _lib_*.py / _cctally_*.py additions land automatically — parity
+  # guard lives in tests/test_package_files.py. NOT symlinked into
+  # `bin/` (import-only; should not appear on the user's PATH).
+  RUNTIME_SIBLING_GLOBS = %w[bin/_lib_*.py bin/_cctally_*.py].freeze
+
   def install
     USER_FACING_BINS.each { |name| (libexec/"bin").install "bin/#{name}" }
+    Dir.glob(RUNTIME_SIBLING_GLOBS).each { |path| (libexec/"bin").install path }
     (libexec/"dashboard").install "dashboard/static"
     libexec.install "CHANGELOG.md"
 
