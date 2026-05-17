@@ -1,0 +1,47 @@
+name: refuse-formula-downgrade
+
+# Server-side gate: refuse pushes to `main` whose Formula/cctally.rb
+# url-pinned SemVer regresses against the previous commit. Belt-and-
+# suspenders against cctally-dev #30 (regression history) and disjoint
+# from the client-side gate in `cctally release` Phase 6 — this catches
+# stray pushes that bypass the release script entirely.
+#
+# Tracking issue: omrikais/cctally-dev#54
+# Override: append `Allow-Formula-Downgrade: true` to the commit message.
+#
+# Push-trigger only by design: a PR-merge into `main` arrives here as a
+# `push` event, so the gate fires on the result either way. Pull-request
+# runs were skipped to keep run count + attack surface minimal — the
+# parser has no secrets and only reads git, but fewer triggers = fewer
+# moving parts.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (HEAD + HEAD^)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install pytest
+        run: pip install --no-cache-dir pytest
+
+      - name: Run parser unit tests
+        run: pytest -q .github/scripts/test_check_formula_monotonic.py
+
+      - name: Refuse formula SemVer downgrade
+        run: python3 .github/scripts/check_formula_monotonic.py
