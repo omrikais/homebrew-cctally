@@ -1,8 +1,8 @@
 class Cctally < Formula
   desc "Track Claude Code subscription usage as $-per-1% weekly trend"
   homepage "https://github.com/omrikais/cctally"
-  url "https://github.com/omrikais/cctally/archive/refs/tags/v1.21.3.tar.gz"
-  sha256 "d9e82e85a6b852de13029d8485c2dd539b5c0f6f1f4c22ed2b0650af126d225d"
+  url "https://github.com/omrikais/cctally/archive/refs/tags/v1.22.0.tar.gz"
+  sha256 "5245f142218d002713983cefc7a2e75e622439f7fb26d33e9a958b33a50dd91a"
   license "Apache-2.0"
 
   depends_on "python@3.13"
@@ -10,6 +10,7 @@ class Cctally < Formula
   USER_FACING_BINS = %w[
     cctally
     cctally-alerts
+    cctally-budget
     cctally-dashboard
     cctally-dollar-per-percent
     cctally-five-hour-blocks
