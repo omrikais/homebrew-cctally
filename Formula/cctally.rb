@@ -1,8 +1,8 @@
 class Cctally < Formula
   desc "Track Claude Code subscription usage as $-per-1% weekly trend"
   homepage "https://github.com/omrikais/cctally"
-  url "https://github.com/omrikais/cctally/archive/refs/tags/v1.37.2.tar.gz"
-  sha256 "fdc28f7b3b8d76bd8ca24f289aea8fd1db8fc0f3be7f559abad22fec5fab1f2a"
+  url "https://github.com/omrikais/cctally/archive/refs/tags/v1.38.0.tar.gz"
+  sha256 "bbed8ccf0a33d07b4223b14a73be7b0a6c6aa66477a488553c9f53da52ae9c17"
   license "Apache-2.0"
 
   depends_on "python@3.13"
